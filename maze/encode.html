@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link Maze - Encoder Tool</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="url"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #357abd;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #e9f7ef;
+      border-radius: 4px;
+      border-left: 4px solid #27ae60;
+      display: none;
+    }
+
+    .encoded-text,
+    .maze-url {
+      padding: 10px;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 10px 0;
+      word-break: break-all;
+      font-family: monospace;
+    }
+
+    .copy-btn {
+      background-color: #27ae60;
+      padding: 5px 10px;
+      margin-left: 5px;
+      font-size: 14px;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Link Maze - Encoder Tool</h1>
+
+    <p>Use this tool to encode your links and generate maze URLs that you can share with others.</p>
+
+    <div class="form-group">
+      <label for="link-input">Enter the URL you want to encode:</label>
+      <input type="url" id="link-input" placeholder="https://example.com" required>
+    </div>
+
+    <button id="encode-btn">Encode & Generate Maze URL</button>
+
+    <div id="result" class="result">
+      <h2>Your Results</h2>
+
+      <p><strong>Base64 Encoded Link:</strong></p>
+      <div class="encoded-text" id="encoded-link"></div>
+      <button class="copy-btn" data-target="encoded-link">Copy</button>
+
+      <p><strong>Maze Game URL:</strong></p>
+      <div class="maze-url" id="maze-url"></div>
+      <button class="copy-btn" data-target="maze-url">Copy</button>
+
+      <p>
+        <a id="play-link" href="#" target="_blank">Click here to play the maze</a> or share the URL with others.
+      </p>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to Maze Game</a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const linkInput = document.getElementById('link-input');
+      const encodeBtn = document.getElementById('encode-btn');
+      const result = document.getElementById('result');
+      const encodedLink = document.getElementById('encoded-link');
+      const mazeUrl = document.getElementById('maze-url');
+      const playLink = document.getElementById('play-link');
+      const copyBtns = document.querySelectorAll('.copy-btn');
+
+      encodeBtn.addEventListener('click', () => {
+        const link = linkInput.value.trim();
+
+        if (!link) {
+          alert('Please enter a valid URL');
+          return;
+        }
+
+        // Encode the link to base64
+        try {
+          const encoded = btoa(link);
+
+          // Get current page URL and replace filename with index.html
+          const currentUrl = window.location.href;
+          const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+          const fullMazeUrl = `${baseUrl}index.html?link=${encoded}`;
+
+          // Update elements with results
+          encodedLink.textContent = encoded;
+          mazeUrl.textContent = fullMazeUrl;
+          playLink.href = fullMazeUrl;
+
+          // Show results
+          result.style.display = 'block';
+        } catch (e) {
+          alert('Error encoding the link. Make sure it uses valid characters.');
+        }
+      });
+
+      // Copy buttons functionality
+      copyBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
+          const textToCopy = document.getElementById(targetId).textContent;
+
+          navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+              // Change button text temporarily
+              const originalText = btn.textContent;
+              btn.textContent = 'Copied!';
+              setTimeout(() => {
+                btn.textContent = originalText;
+              }, 1500);
+            })
+            .catch(err => {
+              console.error('Could not copy text: ', err);
+              alert('Failed to copy text. Please try manually selecting and copying.');
+            });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

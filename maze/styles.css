@@ -1,0 +1,170 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#instructions {
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 1.1em;
+}
+
+#link-container {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #e9f7ef;
+  border-radius: 10px;
+  border: 2px solid #27ae60;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  transition: all 0.3s ease-in-out;
+  transform-origin: top center;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+#link-container:not(.hidden) {
+  animation: appear 0.5s forwards;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#hidden-link {
+  color: #27ae60;
+  font-weight: bold;
+  word-break: break-all;
+  display: inline-block;
+  padding: 8px 15px;
+  border-radius: 5px;
+  background-color: #f9fffe;
+  border: 1px dashed #27ae60;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+#hidden-link:hover {
+  background-color: #27ae60;
+  color: white;
+  border-style: solid;
+}
+
+#game-container {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#maze-canvas {
+  background-color: white;
+  border: 2px solid #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+#controls {
+  display: grid;
+  column-gap: 10px;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+#up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+
+#right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+#down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+
+button {
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  background-color: #164062;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  background-color: #357abd;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.encoder-link {
+  margin-top: 30px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.encoder-link a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.encoder-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  #maze-canvas {
+    width: 90%;
+    height: auto;
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze Surprise!</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Maze Link</h1>
+    <p id="instructions">Navigate through the maze to reveal your surprise!</p>
+    <div id="link-container" class="hidden">
+      <p>Congratulations! Here's your link:</p>
+      <a id="hidden-link" href="#" target="_blank"></a>
+    </div>
+    <div id="game-container">
+      <canvas id="maze-canvas"></canvas>
+      <div id="controls">
+        <button id="up">↑</button>
+        <button id="left">←</button>
+        <button id="right">→</button>
+        <button id="down">↓</button>
+      </div>
+    </div>
+    <p class="encoder-link">Want to create your own maze link? <a href="encode.html">Use the encoder tool</a></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
