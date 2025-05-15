@@ -430,26 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set up for animation
     const finalLink = originalLink;
-    hiddenLink.textContent = '';
     hiddenLink.href = finalLink;
-
-    let charIndex = 0;
-    const typingSpeed = Math.max(50, 150 - finalLink.length); // Faster for longer URLs
-
-    // Typewriter effect function
-    function typeWriter() {
-      if (charIndex < finalLink.length) {
-        hiddenLink.textContent += finalLink.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeWriter, typingSpeed);
-      } else {
-        // Add a little bounce animation at the end
-        hiddenLink.classList.add('link-revealed');
-      }
-    }
-
-    // Start the typing animation
-    setTimeout(typeWriter, 600);
   }
 
   // Draw maze and player on canvas

@@ -38,6 +38,9 @@ h1 {
   max-width: 90%;
   transition: all 0.3s ease-in-out;
   transform-origin: top center;
+  position: absolute;
+  width: 760px;
+  top: 100px;
 }
 
 .hidden {
