@@ -594,8 +594,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const setDirection = (e) => {
         preventAllDefault(e);
         if (!gameCompleted) { // Only set direction if game not completed
-          movementKeys[direction] = true;
-          startContinuousMovement();
+          // For buttons, just move once in the direction
+          switch (direction) {
+            case 'up':
+              movePlayer(0, -1);
+              break;
+            case 'down':
+              movePlayer(0, 1);
+              break;
+            case 'left':
+              movePlayer(-1, 0);
+              break;
+            case 'right':
+              movePlayer(1, 0);
+              break;
+          }
         }
       };
 
