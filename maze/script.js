@@ -591,10 +591,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Direction buttons - prevent default on all event types
     const preventAndSetDirection = (button, direction) => {
-      const setDirection = (e) => {
+      let pressTimer = null;
+
+      const startMoving = (e) => {
         preventAllDefault(e);
-        if (!gameCompleted) { // Only set direction if game not completed
-          // For buttons, just move once in the direction
+        if (!gameCompleted) {
+          // First immediate move
           switch (direction) {
             case 'up':
               movePlayer(0, -1);
@@ -609,11 +611,32 @@ document.addEventListener('DOMContentLoaded', () => {
               movePlayer(1, 0);
               break;
           }
+
+          // Start continuous movement after a short delay
+          pressTimer = setTimeout(() => {
+            movementKeys[direction] = true;
+            startContinuousMovement();
+          }, 200); // Short delay before continuous movement starts
         }
       };
 
-      button.addEventListener('mousedown', setDirection, { passive: false });
-      button.addEventListener('touchstart', setDirection, { passive: false });
+      const stopMoving = (e) => {
+        preventAllDefault(e);
+        if (pressTimer) {
+          clearTimeout(pressTimer);
+          pressTimer = null;
+        }
+        movementKeys[direction] = false;
+        if (!movementKeys.up && !movementKeys.down && !movementKeys.left && !movementKeys.right) {
+          stopContinuousMovement();
+        }
+      };
+
+      button.addEventListener('mousedown', startMoving, { passive: false });
+      button.addEventListener('touchstart', startMoving, { passive: false });
+      button.addEventListener('mouseup', stopMoving, { passive: false });
+      button.addEventListener('touchend', stopMoving, { passive: false });
+      button.addEventListener('mouseleave', stopMoving, { passive: false });
       button.addEventListener('click', preventAllDefault, { passive: false });
 
       // Also add these to directly handle scroll triggering
