@@ -163,22 +163,24 @@ document.addEventListener('DOMContentLoaded', () => {
     carve(1, 1);
 
     // Add some random passages (dead ends and loops) to increase complexity
-    for (let i = 0; i < mazeWidth * mazeHeight * 0.1; i++) {
+    // Reduce the number of random modifications to ensure better path availability
+    const randomPassageCount = Math.floor(mazeWidth * mazeHeight * 0.05);
+    for (let i = 0; i < randomPassageCount; i++) {
       const x = Math.floor(random() * (mazeWidth - 4)) + 2;
       const y = Math.floor(random() * (mazeHeight - 4)) + 2;
 
-      if (countWallNeighbors(x, y) >= 5 && random() < difficulty) {
+      if (countWallNeighbors(x, y) >= 5 && random() < difficulty * 0.7) {
         maze[y][x] = 0;
       }
     }
 
-    // Add some random walls to create more challenging paths
-    for (let i = 0; i < mazeWidth * mazeHeight * 0.05; i++) {
+    // Add fewer random walls to reduce the chance of blocking paths
+    const randomWallCount = Math.floor(mazeWidth * mazeHeight * 0.03);
+    for (let i = 0; i < randomWallCount; i++) {
       const x = Math.floor(random() * (mazeWidth - 4)) + 2;
       const y = Math.floor(random() * (mazeHeight - 4)) + 2;
 
-      // Don't block the path completely by ensuring it's not a critical junction
-      if (maze[y][x] === 0 && countWallNeighbors(x, y) <= 5 && random() < difficulty * 0.5) {
+      if (maze[y][x] === 0 && countWallNeighbors(x, y) <= 4 && random() < difficulty * 0.3) {
         if (!isPathCritical(x, y)) {
           maze[y][x] = 1;
         }
@@ -198,9 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-
-    // Ensure there's a valid path from start to exit
-    ensureValidPath();
   }
 
   // Helper function to check if a position is within the maze bounds
@@ -268,28 +267,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // If no path found, force create a path
-    createForcedPath();
-    return false;
-  }
-
-  // Create a direct path from start to exit if no valid path exists
-  function createForcedPath() {
-    let x = 1, y = 1;
-    const targetX = exitPosition.x;
-    const targetY = exitPosition.y;
-
-    while (x !== targetX || y !== targetY) {
-      // Move closer to the target
-      if (x < targetX) x++;
-      else if (x > targetX) x--;
-
-      if (y < targetY) y++;
-      else if (y > targetY) y--;
-
-      // Carve path
-      maze[y][x] = 0;
-    }
+    // If no path found, regenerate the entire maze
+    generateMaze(seed);
+    return ensureValidPath(); // Recursively check the new maze
   }
 
   // Animation variables for celebration effect
